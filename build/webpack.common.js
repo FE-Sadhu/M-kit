@@ -1,9 +1,31 @@
 const path = require('path');
+const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 const WebpackBar = require('webpackbar');
 // webpack 打包编译时，起一个单独的进程去并行地进行 TypeScript 的类型检查
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const readEnv = (file) => {
+  // file 为文件路径
+  let fileName = path.join(__dirname, file);
+  let data = fs.readFileSync(fileName, { encoding: 'utf8' });
+  let d = data.replace(/\r/g, '').replace(/\n/g, ','); // 把换行和回车替换
+  let arr = d.split(',').map((item) => {
+    return item.split('=');
+  });
+  let obj = {};
+  arr.forEach((item) => {
+    obj[item[0]] = item[1];
+  });
+  return obj; // { a: '1', b: '2' }
+  // 可以接着处理
+  /* 像 vue-cli3 新版 create-react-app 一样规定环境变量的 Key 必须以 (VUE_APP_)  (REACT_APP_) 开头 */
+};
+
+const env_dev = readEnv('../.env.development');
+const env = readEnv('../.env');
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -95,6 +117,10 @@ module.exports = {
           syntactic: true, // 检查语法
         },
       },
+    }),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(isDev ? { ...env_dev } : { ...env }),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     }),
   ],
   optimization: {
