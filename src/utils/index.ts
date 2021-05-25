@@ -19,7 +19,7 @@ export const useMount = (fn: () => void) => {
   }, []);
 };
 
-export const useDebouncedState = (val: unknown, delay = 200): any => {
+export const useDebouncedState = <V>(val: V, delay = 200) => {
   const [state, setState] = useState(val);
   useEffect(() => {
     const timeout = setTimeout(() => {
