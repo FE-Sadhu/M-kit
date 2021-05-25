@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-export const isFalsy = (value) => (value === 0 ? false : !value);
+export const isFalsy: (value: unknown) => boolean = (value) => (value === 0 ? false : !value);
 
-export const cleanObject = (object) => {
+export const cleanObject = (object: object) => {
   const result = { ...object };
   Object.keys(result).forEach((key) => {
     const value = result[key];
@@ -13,15 +13,14 @@ export const cleanObject = (object) => {
   return result;
 };
 
-export const useMount = (fn) => {
+export const useMount = (fn: () => void) => {
   useEffect(() => {
     fn();
   }, []);
 };
 
-export const useDebouncedState = (val, delay) => {
+export const useDebouncedState = (val: unknown, delay = 200): any => {
   const [state, setState] = useState(val);
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       setState(val);
@@ -30,6 +29,5 @@ export const useDebouncedState = (val, delay) => {
       timeout && clearTimeout(timeout);
     };
   }, [val]);
-
   return state;
 };
