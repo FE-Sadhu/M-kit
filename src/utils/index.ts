@@ -31,3 +31,33 @@ export const useDebouncedState = <V>(val: V, delay = 200) => {
   }, [val]);
   return state;
 };
+
+interface ret<S> {
+  value: S[];
+  clear: () => void;
+  removeIndex: (i: number) => void;
+  add: (v: S) => void;
+}
+
+export const useArray = <T>(val: T[]): ret<T> => {
+  const [value, setValue] = useState(val);
+
+  const add = (item: T) => {
+    setValue([...val, item]);
+  };
+
+  const removeIndex = (i: number) => {
+    const copy = [...val];
+    copy.splice(i, 1);
+    setValue(copy);
+  };
+
+  const clear = () => setValue([]);
+
+  return {
+    value,
+    add,
+    removeIndex,
+    clear,
+  };
+};

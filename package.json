@@ -11,7 +11,7 @@
     "build:analyze": "cross-env NODE_ENV=production webpack --config ./build/webpack.config.js --env analyze",
     "tsc:compile": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "json-server": "json-server --watch __json_server_mock__/db.json --port 3001"
+    "json-server": "json-server --watch __json_server_mock__/db.json --port 3001 --middlewares ./__json_server_mock__/middleware.js"
   },
   "author": {
     "name": "Sadhu",
