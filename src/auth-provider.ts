@@ -2,7 +2,7 @@
 
 import { User } from './components/project-list/search-panel';
 
-const apiUrl = process.env.REACT_API_URL;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const localStorageKey = '__auth_provider_token__';
 
