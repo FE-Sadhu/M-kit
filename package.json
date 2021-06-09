@@ -46,6 +46,12 @@
     "workerDirectory": "public"
   },
   "devDependencies": {
-    "@types/qs": "^6.9.6"
+    "@types/qs": "^6.9.6",
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
