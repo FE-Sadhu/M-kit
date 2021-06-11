@@ -45,7 +45,21 @@ export const http = async (endpoint: string, {data, token, headers, ...customCon
 
 export const useHttp = () => {
   const { user } = useAuth();
-  // TODO TS 操作符
+  // Parameters >>> Obtain the parameters of a function type in a tuple
   return (...[endpoint, config]: Parameters<typeof http>) =>
     http(endpoint, { ...config, token: user?.token });
 };
+
+// some testing codes
+/** 
+interface Person {
+  name: string,
+  age: number
+}
+
+type PersonKeys = keyof Person
+const b: PersonKeys = 'name';
+
+const xiaoMing: Partial<Person> = {name: '1'}
+const shenMiRen: Omit<Person, 'name'> = {age: 1, name: 's'}
+*/
