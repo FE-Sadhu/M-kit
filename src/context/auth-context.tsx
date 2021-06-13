@@ -1,4 +1,4 @@
-import React, { ProviderProps, ReactNode, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import * as auth from '../auth-provider';
 import { User } from '../components/project-list/search-panel';
 import { http } from '../utils/http';

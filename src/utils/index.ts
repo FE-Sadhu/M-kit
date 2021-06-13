@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 
 export const isFalsy: (value: unknown) => boolean = (value) => (value === 0 ? false : !value);
 
+export const isVoid = (value: unknown) =>
+  value === undefined || value === null || value === "";
+
 export const cleanObject = (object: {[propName: string]: any}) => {
   const result = { ...object };
   Object.keys(result).forEach((key) => {
     const value = result[key];
-    if (isFalsy(value)) {
+    if (isVoid(value)) {
       delete result[key];
     }
   });
@@ -16,6 +19,8 @@ export const cleanObject = (object: {[propName: string]: any}) => {
 export const useMount = (fn: () => void) => {
   useEffect(() => {
     fn();
+    // TODO 依赖项里加上callback会造成无限循环，这个和useCallback以及useMemo有关系
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 
@@ -28,7 +33,7 @@ export const useDebouncedState = <V>(val: V, delay = 200) => {
     return () => {
       timeout && clearTimeout(timeout);
     };
-  }, [val]);
+  }, [val, delay]);
   return state;
 };
 
