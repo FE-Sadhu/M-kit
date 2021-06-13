@@ -4,7 +4,7 @@ import App from './App';
 import { AppProviders } from './context/index';
 import { loadDevTools } from 'jira-dev-tool';
 // 引入 .Less 是为了使用 css 变量改变主题
-import 'antd/dist/antd.less'
+import 'antd/dist/antd.less';
 
 loadDevTools(() => {
   ReactDOM.render(
