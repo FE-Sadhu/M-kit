@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuth } from '../context/auth-context';
 import { Form, Input } from 'antd';
 import { LongButton } from './index';
+import { useAsync } from '../utils/useAsync';
 
 type Props = {
   onError: Function
@@ -9,10 +10,11 @@ type Props = {
 
 export const LoginScreen = ({onError}: Props) => {
   const { login } = useAuth();
+  const {run, isLoading} = useAsync(void 0, {throwError : true});
 
   const handleSubmit = async (values: {username: string, password: string}) => {
     try {
-      await login(values);   
+      await run(login(values));      
     } catch (error) {
       onError(error);
     }
@@ -33,7 +35,7 @@ export const LoginScreen = ({onError}: Props) => {
         <Input placeholder={'密码'} type="password" id="password" autoComplete="on" />
       </Form.Item>
       <Form.Item>
-        <LongButton htmlType={'submit'} type="primary">登录</LongButton>
+        <LongButton loading={isLoading} htmlType={'submit'} type="primary">登录</LongButton>
       </Form.Item>
     </Form>
   );
