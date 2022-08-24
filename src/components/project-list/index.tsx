@@ -33,7 +33,7 @@ export const ProjectListScreen = () => {
     <Container>
       <h1>项目列表</h1>
       <SearchPanel users={users} param={param} setParam={setParam} />
-      {isError && <Typography.Text>{error!.message}</Typography.Text> }
+      {isError && <Typography.Text type='danger'>{error!.message}</Typography.Text> }
       <List 
         users={users}
         dataSource={list || []}

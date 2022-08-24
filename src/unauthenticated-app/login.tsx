@@ -3,11 +3,19 @@ import { useAuth } from '../context/auth-context';
 import { Form, Input } from 'antd';
 import { LongButton } from './index';
 
-export const LoginScreen = () => {
+type Props = {
+  onError: Function
+}
+
+export const LoginScreen = ({onError}: Props) => {
   const { login } = useAuth();
 
-  const handleSubmit = (values: {username: string, password: string}) => {
-    login(values);
+  const handleSubmit = async (values: {username: string, password: string}) => {
+    try {
+      await login(values);   
+    } catch (error) {
+      onError(error);
+    }
   };
 
   return (
