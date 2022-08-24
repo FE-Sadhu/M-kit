@@ -5,7 +5,7 @@ export const isFalsy: (value: unknown) => boolean = (value) => (value === 0 ? fa
 export const isVoid = (value: unknown) =>
   value === undefined || value === null || value === "";
 
-export const cleanObject = (object: {[propName: string]: unkown}) => {
+export const cleanObject = (object: {[propName: string]: unknown}) => {
   const result = { ...object };
   Object.keys(result).forEach((key) => {
     const value = result[key];
