@@ -1,45 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { SearchPanel } from './search-panel';
-import { List } from './list';
+import { List, Project } from './list';
 import { cleanObject, useDebouncedState, useMount } from '../../utils';
 import { useHttp } from '../../utils/http';
 import styled from "@emotion/styled";
 import { Typography } from 'antd';
+import { useAsync } from '../../utils/useAsync';
 
 
 export const ProjectListScreen = () => {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
-
   const [param, setParam] = useState({
     name: '',
     personId: '',
   });
   const debouncedParam = useDebouncedState(param, 1000);
-
-  const [list, setList] = useState([]);
+  const {run, isLoading, isError, error, data: list} = useAsync<Project[]>()
   const client = useHttp();
 
   useEffect(() => {
-    setLoading(true);
-    client('projects', {
+    run(client('projects', {
       data: cleanObject(debouncedParam),
-    })
-    .then((data) => {
-      setList(data);
-      setError(null)
-    })
-    .catch((e) => {
-      setError(e);
-      setList([])
-    })
-    .finally(() => setLoading(false))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }))
   }, [debouncedParam]);
 
   useMount(() => {
-    // TODO catch 呢？
     client("users").then(setUsers);
   });
 
@@ -48,11 +33,11 @@ export const ProjectListScreen = () => {
     <Container>
       <h1>项目列表</h1>
       <SearchPanel users={users} param={param} setParam={setParam} />
-      {error && <Typography.Text>{error.message}</Typography.Text> }
+      {isError && <Typography.Text>{error!.message}</Typography.Text> }
       <List 
         users={users}
-        dataSource={list}
-        loading={loading}
+        dataSource={list || []}
+        loading={isLoading}
       />
     </Container>
   );
