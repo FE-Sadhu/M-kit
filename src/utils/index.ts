@@ -5,7 +5,7 @@ export const isFalsy: (value: unknown) => boolean = (value) => (value === 0 ? fa
 export const isVoid = (value: unknown) =>
   value === undefined || value === null || value === "";
 
-export const cleanObject = (object: {[propName: string]: any}) => {
+export const cleanObject = (object: {[propName: string]: unkown}) => {
   const result = { ...object };
   Object.keys(result).forEach((key) => {
     const value = result[key];
@@ -19,7 +19,7 @@ export const cleanObject = (object: {[propName: string]: any}) => {
 export const useMount = (fn: () => void) => {
   useEffect(() => {
     fn();
-    // TODO 依赖项里加上callback会造成无限循环，这个和useCallback以及useMemo有关系
+    // TODO 依赖项里加上 callback 会造成无限循环，这个和 useCallback 以及 useMemo 有关系
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
