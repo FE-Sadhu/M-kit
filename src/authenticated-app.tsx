@@ -5,6 +5,7 @@ import { ReactComponent as SoftwareLogo } from "./assets/software-logo.svg";
 import styled from "@emotion/styled";
 import { Row } from './libs/lib';
 import {Dropdown, Menu, Button} from 'antd';
+import { useDocumentTitle } from './utils';
 
 /**
  * grid 和 flex 各自的应用场景
@@ -20,6 +21,7 @@ import {Dropdown, Menu, Button} from 'antd';
 
 export const AuthenticatedApp = () => {
   const { logout, user } = useAuth();
+  useDocumentTitle('登录后', false)
   return (
     <Container>
       <Header between={true}>

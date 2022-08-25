@@ -50,12 +50,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return <FullPageLoading />
   }
 
-  console.log(' dsadsadsa user 22', user)
-
   if (isError) {
     return <FullPageErrorFallback error={error} />;
   }
-  console.log(' dsadsadsa user ', user)
+
   return <AuthContext.Provider value={{ user, login, register, logout }}>{children}</AuthContext.Provider>;
 };
 
