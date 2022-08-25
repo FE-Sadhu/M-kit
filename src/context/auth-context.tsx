@@ -1,8 +1,10 @@
 import React, { ReactNode, useState } from 'react';
 import * as auth from '../auth-provider';
 import { User } from '../components/project-list/search-panel';
+import { FullPageErrorFallback, FullPageLoading } from '../libs/lib';
 import { http } from '../utils/http';
 import { useMount } from '../utils/index';
+import { useAsync } from '../utils/useAsync';
 
 interface AuthForm {
   username: string;
@@ -33,18 +35,27 @@ const AuthContext =
 AuthContext.displayName = 'AuthContext';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-
+  const {run, data: user, isIdle, isLoading, isError, error} = useAsync<User | null>(void 0, {throwError: false})
   // point free
-  const login = (form: AuthForm) => auth.login(form).then(setUser);
-  const register = (form: AuthForm) => auth.register(form).then(setUser);
-  const logout = () => auth.logout().then(() => setUser(null));
+  const login = (form: AuthForm) => run(auth.login(form))
+  const register = (form: AuthForm) => run(auth.register(form));
+  const logout = () => auth.logout().then(() => run(Promise.resolve(null)));
 
   useMount(() => {
     // 登录状态维持
-    bootstrapUser().then(setUser);
+    run(bootstrapUser());
   })
 
+  if (isIdle || isLoading) {
+    return <FullPageLoading />
+  }
+
+  console.log(' dsadsadsa user 22', user)
+
+  if (isError) {
+    return <FullPageErrorFallback error={error} />;
+  }
+  console.log(' dsadsadsa user ', user)
   return <AuthContext.Provider value={{ user, login, register, logout }}>{children}</AuthContext.Provider>;
 };
 

@@ -16,6 +16,7 @@ export const LoginScreen = ({onError}: Props) => {
     try {
       await run(login(values));      
     } catch (error) {
+      console.log(' catch login ', error)
       onError(error);
     }
   };
