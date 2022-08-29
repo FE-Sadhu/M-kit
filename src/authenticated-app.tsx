@@ -6,7 +6,8 @@ import styled from "@emotion/styled";
 import { Row } from './libs/lib';
 import {Dropdown, Menu, Button} from 'antd';
 import { useDocumentTitle } from './utils';
-
+import { Routes, Route } from 'react-router';
+import { ProjectScreen } from './components/project';
 /**
  * grid 和 flex 各自的应用场景
  * 1. 要考虑，是一维布局 还是 二维布局
@@ -20,37 +21,44 @@ import { useDocumentTitle } from './utils';
  */
 
 export const AuthenticatedApp = () => {
-  const { logout, user } = useAuth();
   useDocumentTitle('登录后', false)
   return (
     <Container>
-      <Header between={true}>
-        <HeaderLeft gap={true}>
-        <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
-          <h3>项目</h3>
-          <h3>用户</h3>
-        </HeaderLeft>
-        <HeaderRight>
-          <Dropdown
-              overlay={
-                <Menu>
-                  <Menu.Item key={"logout"}>
-                    <Button type={'link'} onClick={logout}>登出</Button>
-                  </Menu.Item>
-                </Menu>
-              }
-            >
-            <Button type={'link'} onClick={(e) => e.preventDefault()}>Hi, {user?.name}</Button>
-          </Dropdown>
-        </HeaderRight>
-      </Header>
+      <PageHeader />
       <Main>
-        <ProjectListScreen />
+        <Routes>
+          <Route path="/project" element={<ProjectListScreen />}/>
+          <Route path="/project/:projectId/*" element={<ProjectScreen />}/>
+        </Routes>
       </Main>
     </Container>
   );
 };
 
+const PageHeader = () => {
+  const { logout, user } = useAuth();
+
+return <Header between={true}>
+<HeaderLeft gap={true}>
+<SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
+  <h3>项目</h3>
+  <h3>用户</h3>
+</HeaderLeft>
+<HeaderRight>
+  <Dropdown
+      overlay={
+        <Menu>
+          <Menu.Item key={"logout"}>
+            <Button type={'link'} onClick={logout}>登出</Button>
+          </Menu.Item>
+        </Menu>
+      }
+    >
+    <Button type={'link'} onClick={(e) => e.preventDefault()}>Hi, {user?.name}</Button>
+  </Dropdown>
+</HeaderRight>
+</Header>;
+}
 const Container = styled.div`
   display: grid;
   grid-template-rows: 6rem 1fr;
