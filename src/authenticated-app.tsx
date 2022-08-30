@@ -1,13 +1,13 @@
 import React from 'react';
 import { ProjectListScreen } from './components/project-list';
 import { useAuth } from './context/auth-context';
-import { ReactComponent as SoftwareLogo } from "./assets/software-logo.svg";
-import styled from "@emotion/styled";
+import { ReactComponent as SoftwareLogo } from './assets/software-logo.svg';
+import styled from '@emotion/styled';
 import { Row } from './libs/lib';
-import {Dropdown, Menu, Button} from 'antd';
+import { Dropdown, Menu, Button } from 'antd';
 import { useDocumentTitle } from './utils';
-import { Routes, Route } from 'react-router';
-import { ProjectScreen } from './components/project';
+import { Routes, Route } from 'react-router-dom';
+import ProjectScreen from './components/project';
 /**
  * grid 和 flex 各自的应用场景
  * 1. 要考虑，是一维布局 还是 二维布局
@@ -21,14 +21,14 @@ import { ProjectScreen } from './components/project';
  */
 
 export const AuthenticatedApp = () => {
-  useDocumentTitle('登录后', false)
+  useDocumentTitle('登录后', false);
   return (
     <Container>
       <PageHeader />
       <Main>
         <Routes>
-          <Route path="/project" element={<ProjectListScreen />}/>
-          <Route path="/project/:projectId/*" element={<ProjectScreen />}/>
+          <Route path="/project" element={<ProjectListScreen />} />
+          <Route path="/project/:projectId/*" element={<ProjectScreen />} />
         </Routes>
       </Main>
     </Container>
@@ -38,36 +38,41 @@ export const AuthenticatedApp = () => {
 const PageHeader = () => {
   const { logout, user } = useAuth();
 
-return <Header between={true}>
-<HeaderLeft gap={true}>
-<SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
-  <h3>项目</h3>
-  <h3>用户</h3>
-</HeaderLeft>
-<HeaderRight>
-  <Dropdown
-      overlay={
-        <Menu>
-          <Menu.Item key={"logout"}>
-            <Button type={'link'} onClick={logout}>登出</Button>
-          </Menu.Item>
-        </Menu>
-      }
-    >
-    <Button type={'link'} onClick={(e) => e.preventDefault()}>Hi, {user?.name}</Button>
-  </Dropdown>
-</HeaderRight>
-</Header>;
-}
+  return (
+    <Header between={true}>
+      <HeaderLeft gap={true}>
+        <SoftwareLogo width="18rem" color="rgb(38, 132, 255)" />
+        <h3>项目</h3>
+        <h3>用户</h3>
+      </HeaderLeft>
+      <HeaderRight>
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item key="logout">
+                <Button type="link" onClick={logout}>
+                  登出
+                </Button>
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <Button type="link" onClick={(e) => e.preventDefault()}>
+            Hi, {user?.name}
+          </Button>
+        </Dropdown>
+      </HeaderRight>
+    </Header>
+  );
+};
 const Container = styled.div`
   display: grid;
   grid-template-rows: 6rem 1fr;
-  grid-template-areas: 
-  "header"
-  "main";
+  grid-template-areas:
+    'header'
+    'main';
   height: 100vh;
 `;
-
 
 // grid-area 用来给grid子元素起名字
 const Header = styled(Row)`

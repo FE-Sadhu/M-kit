@@ -1,6 +1,12 @@
-import React from "react";
+import React from 'react';
 
-export const ProjectScreen = () => {
+const ProjectScreen = () => {
   // const routeType = useRouteType();
-  return <p>ProjectScreen</p>
+  return (
+    <div>
+      <h1>ProjectScreen</h1>
+    </div>
+  );
 };
+
+export default ProjectScreen;
